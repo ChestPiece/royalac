@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+:root {
+  --color-navy: #0d1140;
+  --color-gold: #c9a227;
+  --color-teal: #0f7a72;
+  --color-ivory: #f7f5ef;
+  --color-ink: #1c1f2e;
+  --color-steel: #8b8d98;
+}
+
+@theme inline {
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--color-teal) 25%, white);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .product-card-image:hover {
+    transform: scale(1.02);
+  }
+}
