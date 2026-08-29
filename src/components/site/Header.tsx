@@ -2,11 +2,19 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Envelope, Phone } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
 import { navLinks, site } from "@/lib/content";
 import { cn } from "@/lib/utils";
+
+function isNavActive(href: string, pathname: string, hash: string) {
+  if (href.startsWith("/#")) {
+    return pathname === "/" && hash === href.slice(1);
+  }
+  return pathname === href;
+}
 
 function HamburgerIcon({ open }: { open: boolean }) {
   return (
@@ -34,7 +42,10 @@ function HamburgerIcon({ open }: { open: boolean }) {
 }
 
 export function Header() {
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [hash, setHash] = useState("");
+  const [overHero, setOverHero] = useState(pathname === "/");
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -42,6 +53,28 @@ export function Header() {
       document.body.style.overflow = "";
     };
   }, [open]);
+
+  useEffect(() => {
+    const syncHash = () => setHash(window.location.hash);
+    syncHash();
+    window.addEventListener("hashchange", syncHash);
+    return () => window.removeEventListener("hashchange", syncHash);
+  }, [pathname]);
+
+  useEffect(() => {
+    const hero = document.querySelector("main > section:first-child");
+    if (!hero) {
+      setOverHero(false);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setOverHero(entry.isIntersecting),
+      { threshold: 0, rootMargin: "-72px 0px 0px 0px" }
+    );
+    observer.observe(hero);
+    return () => observer.disconnect();
+  }, [pathname]);
 
   useEffect(() => {
     if (!open) return;
@@ -54,8 +87,10 @@ export function Header() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [open]);
 
+  const solidBar = !overHero || open;
+
   return (
-    <header className="pointer-events-none sticky top-0 z-50 px-4 pt-6">
+    <header className="pointer-events-none sticky top-0 z-50 px-4 pt-6 md:px-6">
       <a
         href="#main"
         className="pointer-events-auto sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[70] focus:rounded-lg focus:bg-white focus:px-3 focus:py-2 focus:text-sm focus:font-semibold focus:text-[var(--color-navy)]"
@@ -65,8 +100,10 @@ export function Header() {
 
       <div
         className={cn(
-          "pointer-events-auto mx-auto flex w-max max-w-full items-center gap-3 rounded-full border border-[var(--color-navy)]/10 bg-[var(--color-ivory)]/80 px-3 py-2 shadow-sm backdrop-blur-xl transition-[box-shadow,background-color] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] lg:gap-5 lg:px-5",
-          open && "border-[var(--color-navy)]/15 bg-[var(--color-ivory)]/95 shadow-md"
+          "pointer-events-auto mx-auto flex w-full max-w-7xl items-center gap-3 rounded-2xl border px-3 py-2 transition-[box-shadow,background-color,border-color] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] lg:gap-4 lg:px-4",
+          solidBar
+            ? "border-[var(--color-navy)]/15 bg-[var(--color-ivory)] shadow-md"
+            : "border-[var(--color-navy)]/10 bg-[var(--color-ivory)]/80 shadow-sm backdrop-blur-xl"
         )}
       >
         <Link href="/" className="shrink-0" aria-label="Royal Cool FZCO home">
@@ -81,28 +118,30 @@ export function Header() {
         </Link>
 
         <nav
-          className="hidden items-center gap-6 lg:flex"
+          className="hidden min-w-0 flex-1 items-center justify-center gap-5 lg:flex xl:gap-6"
           aria-label="Primary navigation"
         >
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-sm font-medium text-[var(--color-ink)] transition-colors hover:text-[var(--color-teal)]"
-            >
-              {link.label}
-            </Link>
-          ))}
+          {navLinks.map((link) => {
+            const active = isNavActive(link.href, pathname, hash);
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                aria-current={active ? "page" : undefined}
+                className={cn(
+                  "text-sm font-medium transition-colors",
+                  active
+                    ? "text-[var(--color-teal)]"
+                    : "text-[var(--color-ink)] hover:text-[var(--color-teal)]"
+                )}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
         </nav>
 
-        <div className="hidden items-center gap-3 lg:flex">
-          <a
-            href={site.phoneHref}
-            className="inline-flex items-center gap-2 text-sm text-[var(--color-steel)] transition-colors hover:text-[var(--color-navy)]"
-          >
-            <Phone className="size-4" weight="regular" aria-hidden="true" />
-            {site.phone}
-          </a>
+        <div className="ml-auto hidden shrink-0 lg:flex">
           <Button asChild size="sm">
             <a href={`mailto:${site.email}`}>
               <Envelope className="size-4" weight="regular" aria-hidden="true" />
@@ -113,7 +152,7 @@ export function Header() {
 
         <button
           type="button"
-          className="relative z-[60] inline-flex size-10 items-center justify-center rounded-full text-[var(--color-navy)] lg:hidden"
+          className="relative z-[60] ml-auto inline-flex size-10 items-center justify-center rounded-lg text-[var(--color-navy)] lg:hidden"
           aria-expanded={open}
           aria-controls="mobile-nav"
           aria-label={open ? "Close menu" : "Open menu"}
