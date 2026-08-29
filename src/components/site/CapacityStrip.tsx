@@ -21,7 +21,7 @@ export function CapacityStrip() {
               <p className="font-mono text-3xl font-medium tracking-tight text-[var(--color-gold)] md:text-4xl">
                 {item.value}
               </p>
-              <p className="mt-2 text-sm uppercase tracking-wide text-white/65">
+              <p className="mt-2 text-sm uppercase tracking-wide text-white/75">
                 {item.label}
               </p>
             </div>

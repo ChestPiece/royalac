@@ -17,6 +17,12 @@
     "react-dom": "^19.0.0",
     "tailwind-merge": "^3.3.0"
   },
+  "browserslist": [
+    "chrome >= 87",
+    "edge >= 88",
+    "firefox >= 78",
+    "safari >= 14"
+  ],
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",

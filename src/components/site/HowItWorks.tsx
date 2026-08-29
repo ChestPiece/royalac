@@ -22,19 +22,21 @@ export function HowItWorks() {
 
         <ol className="mt-12 grid gap-6 md:grid-cols-3">
           {howItWorks.map((step) => (
-            <Reveal key={step.step}>
-              <li className="h-full rounded-xl border border-[var(--color-navy)]/10 bg-white p-8">
-                <p className="font-mono text-sm font-medium text-[var(--color-gold)]">
-                  {step.step}
-                </p>
-                <h3 className="mt-4 text-xl font-semibold text-[var(--color-navy)]">
-                  {step.title}
-                </h3>
-                <p className="mt-4 text-pretty text-sm leading-relaxed text-[var(--color-steel)]">
-                  {step.description}
-                </p>
-              </li>
-            </Reveal>
+            <li key={step.step} className="h-full">
+              <Reveal className="h-full">
+                <div className="h-full rounded-xl border border-[var(--color-navy)]/10 bg-white p-8">
+                  <p className="font-mono text-sm font-medium text-[var(--color-gold)]">
+                    {step.step}
+                  </p>
+                  <h3 className="mt-4 text-xl font-semibold text-[var(--color-navy)]">
+                    {step.title}
+                  </h3>
+                  <p className="mt-4 text-pretty text-sm leading-relaxed text-[var(--color-steel)]">
+                    {step.description}
+                  </p>
+                </div>
+              </Reveal>
+            </li>
           ))}
         </ol>
       </div>

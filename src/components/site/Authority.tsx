@@ -45,7 +45,7 @@ export function Authority() {
                   key={item.label}
                   className="rounded-xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm"
                 >
-                  <p className="text-xs uppercase tracking-wide text-white/50">
+                  <p className="text-xs uppercase tracking-wide text-white/70">
                     {item.label}
                   </p>
                   <p className="mt-2 text-sm font-medium leading-relaxed text-white">

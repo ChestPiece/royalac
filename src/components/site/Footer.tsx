@@ -58,7 +58,7 @@ export function Footer() {
       </div>
 
       <div className="border-t border-white/10">
-        <div className="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-6 text-xs text-white/50 md:flex-row md:items-center md:justify-between md:px-6">
+        <div className="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-6 text-xs text-white/70 md:flex-row md:items-center md:justify-between md:px-6">
           <p>Royal Cool © {new Date().getFullYear()}</p>
           <div className="flex gap-4">
             <Link href="/contact" className="hover:text-white/80">

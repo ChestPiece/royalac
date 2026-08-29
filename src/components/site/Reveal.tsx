@@ -43,10 +43,10 @@ export function Reveal({ children, className }: RevealProps) {
     <div
       ref={ref}
       className={cn(
-        "transition-[opacity,transform,filter] duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none motion-reduce:transform-none motion-reduce:filter-none",
+        "transition-[opacity,transform] duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none motion-reduce:transform-none",
         visible
-          ? "translate-y-0 opacity-100 blur-0"
-          : "translate-y-16 opacity-0 blur-md motion-reduce:opacity-100 motion-reduce:translate-y-0 motion-reduce:blur-0",
+          ? "translate-y-0 opacity-100"
+          : "translate-y-16 opacity-0 motion-reduce:opacity-100 motion-reduce:translate-y-0",
         className
       )}
     >

@@ -41,7 +41,7 @@ function Word({ word }: { word: string }) {
       ref={ref}
       className={cn(
         "inline-block transition-[color] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none",
-        active ? "text-[var(--color-navy)]" : "text-[var(--color-navy)]/30"
+        active ? "text-[var(--color-navy)]" : "text-[var(--color-navy)]/50"
       )}
     >
       {word}
